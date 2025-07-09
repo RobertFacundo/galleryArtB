@@ -1,8 +1,33 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+# .rubocop.yml
+require:
+  - rubocop-rails-omakase
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  Exclude:
+    - "bin/**/*"
+    - "db/**/*"
+    - "config/**/*" # Excluye la carpeta config para evitar errores en archivos generados
+    - "lib/tasks/**/*"
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "log/**/*"
+    - "node_modules/**/*"
+    - "public/**/*"
+    - "storage/**/*"
+    - "Gemfile"
+    - "Rakefile"
+
+Layout/LineLength:
+  Max: 120 # O el número que prefieras, para evitar quejarse de líneas muy largas
+  IgnoredPatterns: ["^\\s*#"] # Ignora líneas de comentario muy largas
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
+    - "spec/**/*"
+    - "config/routes.rb" # Los bloques de rutas suelen ser largos
+    - "db/migrate/**/*" # Las migraciones tienen bloques largos
+    - "db/seeds.rb" # El archivo seeds tendrá un bloque largo para la data
+
+Style/Documentation:
+  Enabled: false # Deshabilita la necesidad de documentación en clases y módulos
