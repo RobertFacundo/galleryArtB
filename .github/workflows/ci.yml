@@ -17,8 +17,13 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true
-          bundler-cache-args: "--with development test"
+          # bundler-cache: true
+          # bundler-cache-args: "--with development test"
+
+      - name: Install dependencies (clean install for CI) # Nuevo paso para forzar instalación completa
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
@@ -33,8 +38,13 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true
-          bundler-cache-args: "--with development test"
+          # bundler-cache: true
+          # bundler-cache-args: "--with development test"
+
+      - name: Install dependencies (clean install for CI) # Nuevo paso
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github

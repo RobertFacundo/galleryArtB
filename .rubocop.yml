@@ -9,13 +9,14 @@ AllCops:
     - "config/**/*" # Excluye la carpeta config para evitar errores en archivos generados
     - "lib/tasks/**/*"
     - "vendor/**/*"
-    - "tmp/**/*"
+    - "tmp/**/*"  
     - "log/**/*"
     - "node_modules/**/*"
     - "public/**/*"
     - "storage/**/*"
     - "Gemfile"
     - "Rakefile"
+    - ".github/**/*"
 
 Layout/LineLength:
   Max: 120 # O el número que prefieras, para evitar quejarse de líneas muy largas
