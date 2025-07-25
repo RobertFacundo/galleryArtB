@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_10_190903) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_182325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,7 +19,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_190903) do
     t.string "artist_name"
     t.text "description"
     t.string "image_url"
-    t.decimal "price"
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -39,7 +39,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_190903) do
     t.string "username"
     t.string "password_digest"
     t.boolean "hasSeenWelcomeModal", default: false, null: false
-    t.integer "coins", default: 10, null: false
+    t.decimal "coins", precision: 10, scale: 2, default: "10.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
