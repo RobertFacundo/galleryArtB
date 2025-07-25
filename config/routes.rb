@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "static/index"
+  get "static#index"
   get "artworks/index"
   get "sessions/create"
   get "sessions/destroy"

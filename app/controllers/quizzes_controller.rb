@@ -74,7 +74,20 @@ class QuizzesController < ApplicationController
         render json: { error: "Artwork not found for this question." }, status: :not_found and return
       end
 
-      correct_value = correct_artwork.send(correct_field)
+      allowed_fields = ['title', 'artist_name']
+
+      unless allowed_fields.include?(correct_field.to_s)
+        render json: {error: 'Invalid correct_field specified'}, status: :bad_request and return
+      end
+
+      correct_value = case correct_field.to_s
+                      when 'title'
+                        correct_artwork.title
+                      when 'artist_name'
+                        correct_artwork.artist_name
+                      else
+                        render json: { error: "Unexpected correct_field value"}, status: :internal_server_error and return
+                      end
 
       if submitted_answer.downcase == correct_value.downcase
         reward = ((rand * (6.0 - 3.0)) + 3.0).round(2)
