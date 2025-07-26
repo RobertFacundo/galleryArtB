@@ -9,7 +9,7 @@ class ArtworksController < ApplicationController
         artwork_json = artwork.as_json(except: [:gallery_id, :created_at, :updated_at])
 
         if artwork.image_url.present?
-          artwork_json[:image_url] = "#{request.base_url}/art_images/#{artwork.image_url}"
+          artwork_json[:image_url] = "#{request.base_url}/#{artwork.image_url}"
         else
           artwork_json[:image_url] = nil
         end 
