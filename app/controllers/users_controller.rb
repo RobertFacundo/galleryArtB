@@ -35,7 +35,9 @@ class UsersController < ApplicationController
         personal_gallery: {
           include: {
             artworks: {
-              except: [:gallery_id, :created_at, :updated_at]
+              except: [:gallery_id, :created_at, :updated_at],
+              methods: [],
+              include_options: {base_url:  request.base_url}
             }
           },
           except: [:user_id, :created_at, :updated_at]

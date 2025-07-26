@@ -51,7 +51,7 @@ class QuizzesController < ApplicationController
         options: all_options,
         reward: generated_reward,
         correct_field: (question_type == 0 ? 'artist_name' : "title"),
-        artwork_image_url: correct_artwork.image_url
+        artwork_image_url: correct_artwork.image_url.present? ? "#{request.base_url}/#{correct_artwork.image_url}" : nil
       }
       
       render json: question, status: :ok

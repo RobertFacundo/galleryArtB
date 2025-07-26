@@ -53,13 +53,20 @@ class UserGalleriesController < ApplicationController
         render json: { message: "Personal gallery not foundfor this user" }, status: :not_found and return
       end
 
-      render json: personal_gallery.as_json(
-        include: {
-          artworks: {
-            except: [:gallery_id, :created_at, :updated_at]
-          }
-        },
-        except: [:user_id, :created_at, :updated_at]
-      ), status: :ok
+      transformed_artworks = personal_gallery.artworks.map do |artwork|
+        artwork_json = artwork.as_json(except: [:gallery_id, :created_at, :updated_at])
+
+        if artwork.image_url.present?
+          artwork_json[:image_url] = "#{request.base_url}/#{artwork.image_url}"
+        else
+          artwork_json[:image_url] = nil
+        end
+        artwork_json
+      end
+
+      gallery_json = personal_gallery.as_json(except: [:user_id, :created_at, :updated_at])
+      gallery_json[:artworks] = transformed_artworks
+
+      render json: gallery_json, status: :ok
     end
 end
