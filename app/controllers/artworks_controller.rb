@@ -5,10 +5,11 @@ class ArtworksController < ApplicationController
     if default_gallery
       artworks = default_gallery.artworks.order(created_at: :desc)
 
-      render json: artworks.as_json(
-        except: [:gallery_id, :created_at, :updated_at],
-        include_options: {base_url: request.base_url}
-      ), status: :ok
+      rendered_artworks = artworks.map do |artwork|
+        artwork.as_json(except: [:gallery_id, :created_at, :updated_at], base_url: request.base_url)
+      end
+
+      render json: rendered_artworks, status: :ok
     else
       render json: { message: 'Work collection not found'}, status: :not_found
     end
