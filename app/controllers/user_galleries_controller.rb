@@ -27,19 +27,26 @@ class UserGalleriesController < ApplicationController
 
       @current_user.reload
 
-      render json: @current_user.as_json(
-        only: [:id, :username, :coins, :hasSeenWelcomeModal],
-        include: {
-          personal_gallery: {
-            include: {
-              artworks: {
-                except: [:gallery_id, :created_at, :updated_at]
-              }
-            },
-            except: [:user_id, :created_at, :updated_at]
-          }
-        }
-      ), status: :ok
+      user_json = @current_user.as_json(
+        only: [:id, :username, :coins, :hasSeenWelcomeModal]
+      )
+
+      if @current_user.personal_gallery.present?
+        personal_gallery_json = @current_user.personal_gallery.as_json(
+          except: [:user_id, :created_at, :updated_at]
+        )
+
+        transformed_artworks = @current_user.personal_gallery.artworks.map do |art|
+          art.as_json(except: [:gallery_id, :created_at, :updated_at], base_url: request.base_url)
+        end
+
+        personal_gallery_json[:artworks] = transformed_artworks
+        user_json[:personal_gallery] = personal_gallery_json
+      else
+        user_json[:personal_gallery] = nil
+      end
+
+      render json: user_json, status: :ok
     rescue ActiveRecord::RecordInvalid => e
       render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
     rescue => e
